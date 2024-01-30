@@ -24,7 +24,10 @@ function SpliderTimer() {
 
   const firstColor = getRandomColor();
 
-  const splideOptions = { autoplay: true };
+  const splideOptions = {
+    autoplay: true,
+    resetProgress: false, // To Stop Rewinding prograssbar
+  };
 
   return (
     <>
@@ -44,13 +47,13 @@ function SpliderTimer() {
         className="border"
       >
         <SplideTrack>
-          <SplideSlide>
+          <SplideSlide data-splide-interval="2000">
             <img src="https://dummyimage.com/600x400/000/fff" alt="Image 1" />
           </SplideSlide>
           <SplideSlide>
             <img src="https://dummyimage.com/600x401/000/fff" alt="Image 2" />
           </SplideSlide>
-          <SplideSlide>
+          <SplideSlide data-splide-interval="400">
             <img src="https://dummyimage.com/600x403/000/fff" alt="Image 3" />
           </SplideSlide>
           <SplideSlide>
@@ -62,7 +65,7 @@ function SpliderTimer() {
 
         {/* Horizontal Progress bar [START]*/}
         <div className="splide__progress">
-          <div className="splide__progress__bar" />
+          <div className={`splide__progress__bar bg-[#7edd2b]`} />
         </div>
         {/* Horizontal Progress bar [END]*/}
 
