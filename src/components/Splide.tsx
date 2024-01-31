@@ -9,6 +9,7 @@ import "@splidejs/react-splide/css/sea-green";
 // or only core styles
 import "@splidejs/react-splide/css/core";
 import { useRef } from "react";
+import { splideOptionType } from "../App";
 
 // random color generator
 function getRandomColor() {
@@ -19,15 +20,11 @@ function getRandomColor() {
   return `rgb(${red},${green},${blue})`;
 }
 
-function SpliderTimer() {
+function SpliderTimer({ splideOptions }: { splideOptions?: splideOptionType }) {
   const circularProgress = useRef<HTMLDivElement | null>(null);
+  const linearProgressBar = useRef<HTMLDivElement | null>(null);
 
   const firstColor = getRandomColor();
-
-  const splideOptions = {
-    autoplay: true,
-    resetProgress: false, // To Stop Rewinding prograssbar
-  };
 
   return (
     <>
@@ -37,6 +34,38 @@ function SpliderTimer() {
         aria-label="My Favorite Images"
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         onAutoplayPlaying={(_e: any, rate: number) => {
+
+          // @TODO on last slide progress bar is stuck 
+
+          const totalSlides: number = _e.Components.Controller.getEnd() + 1;
+          let newIndex: number;
+          if (splideOptions?.type === "loop") {
+            // for loop getnext() for last slide is 0
+            newIndex =
+              _e.Components.Controller.getNext() != 0
+                ? _e.Components.Controller.getNext() - 1
+                : totalSlides - 1; // for the last slide
+          } else {
+            // for type!==loop getnext() for last slide is -1
+            newIndex =
+              _e.Components.Controller.getNext() <= 0
+                ? totalSlides - 1
+                : _e.Components.Controller.getNext() - 1;
+          }
+          const dividedProgress = 100 / totalSlides;
+          // console.log(
+          //   `current index : ${newIndex} move till ${
+          //     dividedProgress * newIndex + dividedProgress
+          //   }`,
+          //   _e.Components.Controller.getNext()
+          // );
+
+          if (linearProgressBar.current && newIndex >= 0) {
+            linearProgressBar.current.style.width = `${
+              dividedProgress * newIndex + dividedProgress * rate
+            }%`;
+          }
+
           if (circularProgress.current) {
             // console.log(rate); // 0-1
             circularProgress.current.style.background = `conic-gradient(${firstColor} ${
@@ -47,17 +76,17 @@ function SpliderTimer() {
         className="border"
       >
         <SplideTrack>
-          <SplideSlide data-splide-interval="2000">
+          <SplideSlide>
             <img src="https://dummyimage.com/600x400/000/fff" alt="Image 1" />
           </SplideSlide>
           <SplideSlide>
             <img src="https://dummyimage.com/600x401/000/fff" alt="Image 2" />
           </SplideSlide>
-          <SplideSlide data-splide-interval="400">
-            <img src="https://dummyimage.com/600x403/000/fff" alt="Image 3" />
+          <SplideSlide>
+            <img src="https://dummyimage.com/600x402/000/fff" alt="Image 3" />
           </SplideSlide>
           <SplideSlide>
-            <img src="https://dummyimage.com/600x404/000/fff" alt="Image 4" />
+            <img src="https://dummyimage.com/600x403/000/fff" alt="Image 4" />
           </SplideSlide>
         </SplideTrack>
 
@@ -65,7 +94,15 @@ function SpliderTimer() {
 
         {/* Horizontal Progress bar [START]*/}
         <div className="splide__progress">
-          <div className={`splide__progress__bar bg-[#7edd2b]`} />
+          <div
+            className={`my-progress bg-[#ffc64a] h-1`}
+            ref={linearProgressBar}
+          />
+          {/* Use this for default progressbar style */}
+          {/* <div
+            className={`splide__progress__bar bg-[#7edd2b]`}
+            // ref={linearProgressBar}
+          /> */}
         </div>
         {/* Horizontal Progress bar [END]*/}
 
