@@ -1,15 +1,22 @@
+//--- Dependencies
+import { useRef } from "react";
 import { Splide, SplideSlide, SplideTrack } from "@splidejs/react-splide";
-
+//--- Types
+import { splideOptionType } from "../App";
+//--- Styles
 // Default theme
 import "@splidejs/react-splide/css";
-
 // or other themes
 import "@splidejs/react-splide/css/sea-green";
-
 // or only core styles
 import "@splidejs/react-splide/css/core";
-import { useRef } from "react";
-import { splideOptionType } from "../App";
+
+export type splidePaginationElementType = {
+  button: HTMLButtonElement;
+  li: HTMLLIElement;
+  page: number;
+  [key: string]: Element | number;
+};
 
 // random color generator
 function getRandomColor() {
@@ -24,6 +31,10 @@ function SpliderTimer({ splideOptions }: { splideOptions?: splideOptionType }) {
   const circularProgress = useRef<HTMLDivElement | null>(null);
   const linearProgressBar = useRef<HTMLDivElement | null>(null);
 
+  // create onetime flag that will first false then never turn into true
+  // until the page refersh or component mount again
+  // let isSlideLoopOnce = false;
+
   const firstColor = getRandomColor();
 
   return (
@@ -34,9 +45,6 @@ function SpliderTimer({ splideOptions }: { splideOptions?: splideOptionType }) {
         aria-label="My Favorite Images"
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         onAutoplayPlaying={(_e: any, rate: number) => {
-
-          // @TODO on last slide progress bar is stuck 
-
           const totalSlides: number = _e.Components.Controller.getEnd() + 1;
           let newIndex: number;
           if (splideOptions?.type === "loop") {
@@ -52,6 +60,7 @@ function SpliderTimer({ splideOptions }: { splideOptions?: splideOptionType }) {
                 ? totalSlides - 1
                 : _e.Components.Controller.getNext() - 1;
           }
+
           const dividedProgress = 100 / totalSlides;
           // console.log(
           //   `current index : ${newIndex} move till ${
@@ -60,7 +69,7 @@ function SpliderTimer({ splideOptions }: { splideOptions?: splideOptionType }) {
           //   _e.Components.Controller.getNext()
           // );
 
-          if (linearProgressBar.current && newIndex >= 0) {
+          if (linearProgressBar.current) {
             linearProgressBar.current.style.width = `${
               dividedProgress * newIndex + dividedProgress * rate
             }%`;
@@ -73,19 +82,39 @@ function SpliderTimer({ splideOptions }: { splideOptions?: splideOptionType }) {
             }deg,rgb(255,255,255) 0deg)`;
           }
         }}
+        onPaginationUpdated={(
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          _e: any,
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          data: any,
+          _prev: splidePaginationElementType,
+          curr: splidePaginationElementType
+        ) => {
+          // console.log("Pagination updated:data, prev, curr", data, prev, curr);
+
+          const liList: Array<splidePaginationElementType> = data.items;
+          const nextIndex = (curr.page + 1) % liList.length;
+
+          //First remove im-next from all list element
+          liList.forEach((liElement) =>
+            liElement.button.classList.remove("im-next")
+          );
+          //apply class im-next
+          liList[nextIndex]?.button?.classList.add("im-next");
+        }}
         className="border"
       >
         <SplideTrack>
-          <SplideSlide>
+          <SplideSlide data-splide-interval="10000">
             <img src="https://dummyimage.com/600x400/000/fff" alt="Image 1" />
           </SplideSlide>
-          <SplideSlide>
+          <SplideSlide data-splide-interval="10000">
             <img src="https://dummyimage.com/600x401/000/fff" alt="Image 2" />
           </SplideSlide>
-          <SplideSlide>
+          <SplideSlide data-splide-interval="10000">
             <img src="https://dummyimage.com/600x402/000/fff" alt="Image 3" />
           </SplideSlide>
-          <SplideSlide>
+          <SplideSlide data-splide-interval="10000">
             <img src="https://dummyimage.com/600x403/000/fff" alt="Image 4" />
           </SplideSlide>
         </SplideTrack>

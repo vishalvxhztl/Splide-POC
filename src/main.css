@@ -2,4 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
+ul.splide__pagination > li {
+  display: flex;
+  align-items: center;
+}
+ul.splide__pagination > li > button.splide__pagination__page.is-active {
+  border-radius: 100%;
+  width: 10px;
+  height: 10px;
+  background-color: rgba(255, 198, 74, 1);
+  opacity: 1;
+}
 
+ul.splide__pagination > li > button.splide__pagination__page {
+  background-color: rgba(170, 170, 170, 0.5);
+}
+
+ul.splide__pagination > li > button.splide__pagination__page.im-next {
+  background-color: rgb(207, 207, 207);
+  border-radius: 10px;
+}
