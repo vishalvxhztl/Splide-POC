@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 //--- Dependencies
 import { useRef } from "react";
 import { Splide, SplideSlide, SplideTrack } from "@splidejs/react-splide";
@@ -11,6 +12,7 @@ import "@splidejs/react-splide/css/sea-green";
 // or only core styles
 import "@splidejs/react-splide/css/core";
 
+//--- Type declartions
 export type splidePaginationElementType = {
   button: HTMLButtonElement;
   li: HTMLLIElement;
@@ -31,10 +33,6 @@ function SpliderTimer({ splideOptions }: { splideOptions?: splideOptionType }) {
   const circularProgress = useRef<HTMLDivElement | null>(null);
   const linearProgressBar = useRef<HTMLDivElement | null>(null);
 
-  // create onetime flag that will first false then never turn into true
-  // until the page refersh or component mount again
-  // let isSlideLoopOnce = false;
-
   const firstColor = getRandomColor();
 
   return (
@@ -43,7 +41,6 @@ function SpliderTimer({ splideOptions }: { splideOptions?: splideOptionType }) {
         hasTrack={false}
         options={splideOptions}
         aria-label="My Favorite Images"
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         onAutoplayPlaying={(_e: any, rate: number) => {
           const totalSlides: number = _e.Components.Controller.getEnd() + 1;
           let newIndex: number;
@@ -56,9 +53,9 @@ function SpliderTimer({ splideOptions }: { splideOptions?: splideOptionType }) {
           } else {
             // for type!==loop getnext() for last slide is -1
             newIndex =
-              _e.Components.Controller.getNext() <= 0
-                ? totalSlides - 1
-                : _e.Components.Controller.getNext() - 1;
+              _e.Components.Controller.getNext() >= 0
+                ? _e.Components.Controller.getNext() - 1
+                : totalSlides - 1;
           }
 
           const dividedProgress = 100 / totalSlides;
@@ -83,9 +80,7 @@ function SpliderTimer({ splideOptions }: { splideOptions?: splideOptionType }) {
           }
         }}
         onPaginationUpdated={(
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           _e: any,
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           data: any,
           _prev: splidePaginationElementType,
           curr: splidePaginationElementType
@@ -95,12 +90,19 @@ function SpliderTimer({ splideOptions }: { splideOptions?: splideOptionType }) {
           const liList: Array<splidePaginationElementType> = data.items;
           const nextIndex = (curr.page + 1) % liList.length;
 
-          //First remove im-next from all list element
+          // First remove im-next from all list element
           liList.forEach((liElement) =>
             liElement.button.classList.remove("im-next")
           );
-          //apply class im-next
+          // apply class im-next
           liList[nextIndex]?.button?.classList.add("im-next");
+
+          // On change/move of slide manual trigger playing of slides
+          // _e.Components.Autoplay.play(); // will not work if we remove the pagination
+        }}
+        onMoved={(_e: any) => {
+          // On change/move of slide manual trigger playing of slides
+          _e.Components.Autoplay.play(); // this code we can do put in onPaginationUpdated Handler, but provide i think proper way is handle play on saperate place.
         }}
         className="border"
       >
