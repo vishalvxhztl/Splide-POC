@@ -1,9 +1,8 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 //--- Dependencies
-import { useRef } from "react";
+import React, { useRef } from "react";
 import { Splide, SplideSlide, SplideTrack } from "@splidejs/react-splide";
 //--- Types
-import { splideOptionType } from "../App";
+import { PaginationData, PaginationItem, Options } from "@splidejs/splide";
 //--- Styles
 // Default theme
 import "@splidejs/react-splide/css";
@@ -11,14 +10,6 @@ import "@splidejs/react-splide/css";
 import "@splidejs/react-splide/css/sea-green";
 // or only core styles
 import "@splidejs/react-splide/css/core";
-
-//--- Type declartions
-export type splidePaginationElementType = {
-  button: HTMLButtonElement;
-  li: HTMLLIElement;
-  page: number;
-  [key: string]: Element | number;
-};
 
 // random color generator
 function getRandomColor() {
@@ -29,7 +20,7 @@ function getRandomColor() {
   return `rgb(${red},${green},${blue})`;
 }
 
-function SpliderTimer({ splideOptions }: { splideOptions?: splideOptionType }) {
+function SpliderTimer({ splideOptions }: { splideOptions?: Options }) {
   const circularProgress = useRef<HTMLDivElement | null>(null);
   const linearProgressBar = useRef<HTMLDivElement | null>(null);
 
@@ -80,14 +71,14 @@ function SpliderTimer({ splideOptions }: { splideOptions?: splideOptionType }) {
           }
         }}
         onPaginationUpdated={(
-          _e: any,
-          data: any,
-          _prev: splidePaginationElementType,
-          curr: splidePaginationElementType
+          _e: typeof Splide,
+          data: PaginationData,
+          _prev: PaginationItem,
+          curr: PaginationItem
         ) => {
           // console.log("Pagination updated:data, prev, curr", data, prev, curr);
 
-          const liList: Array<splidePaginationElementType> = data.items;
+          const liList = data.items;
           const nextIndex = (curr.page + 1) % liList.length;
 
           // First remove im-next from all list element

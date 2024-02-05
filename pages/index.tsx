@@ -1,16 +1,17 @@
 import React from "react";
-import SpliderTimer from "./components/Splide";
+import SpliderTimer from "@/components/SplideJs/SplideTimer";
+//--- Types
+import { Options } from "@splidejs/splide";
+//--- Styles
+// Default theme
+import "@splidejs/react-splide/css";
+// or other themes
+import "@splidejs/react-splide/css/sea-green";
+// or only core styles
+import "@splidejs/react-splide/css/core";
 
-export type splideOptionType = {
-  type?: "loop" | "slide" | "fade";
-  autoplay?: boolean;
-  resetProgress?: boolean;
-  rewind?: boolean;
-  pauseOnHover?: boolean;
-  [key: string]: boolean | number | string | undefined;
-};
-function App() {
-  const [splideOptions] = React.useState<splideOptionType | undefined>({
+export default function Home() {
+  const [splideOptions] = React.useState<Options | undefined>({
     type: "loop",
     autoplay: true,
     pauseOnHover: false,
@@ -33,5 +34,3 @@ function App() {
     </div>
   );
 }
-
-export default App;
