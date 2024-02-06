@@ -60,6 +60,7 @@ const SideSpace = () => {
     if (currSlideCounterElement.current) {
       currSlideCounterElement.current.textContent = (newIndex + 1).toString();
     }
+    _splide.Components.Autoplay.play(); // continue Autoplay after clicking on any move button
   };
 
   // Slide Content

@@ -9,6 +9,7 @@ import "@splidejs/react-splide/css";
 import "@splidejs/react-splide/css/sea-green";
 // or only core styles
 import "@splidejs/react-splide/css/core";
+import MultiSplide from "@/components/SplideJs/UseCase/MultiSplide";
 
 export default function Timer() {
   const [splideOptions] = React.useState<Options | undefined>({
@@ -20,17 +21,16 @@ export default function Timer() {
   });
 
   return (
-    <div className="bg-gray-800">
-      <h2 className="text-6xl text-center p-6"> Slide Js with loop type</h2>
-      <SpliderTimer splideOptions={splideOptions} />
+    <div>
+      <h2 className="text-6xl text-white text-center p-6">
+        Multi slide (Gallery) with loop type
+      </h2>
+      <MultiSplide splideOptions={splideOptions} />
 
-      <h2 className="text-6xl text-center p-6"> Slide Js with slide type</h2>
-      <SpliderTimer splideOptions={{ ...splideOptions, type: "slide" }} />
-      <h2 className="text-6xl text-center p-6"> Slide Js with fade type</h2>
-      
-      <SpliderTimer splideOptions={{ ...splideOptions, type: "fade" }} />
-
-      <div className="m-72" />
+      <h2 className="text-6xl text-white text-center p-6">
+        Multi slide (Gallery) with slide type
+      </h2>
+      <MultiSplide splideOptions={{ ...splideOptions, type: "slide" }} />
     </div>
   );
 }

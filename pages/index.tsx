@@ -36,14 +36,7 @@ export default function Home() {
       <hr className="my-3" />
       <hr />
       {/* <SpliderTimer splideOptions={splideOptions} /> */}
-      <SideSpace />
-      {/* <MultiSplide splideOptions={{ ...splideOptions }} /> */}
-
-      {/* <h2 className="text-6xl text-center p-6"> Slide Js with slide type</h2>
-      <SpliderTimer splideOptions={{ ...splideOptions, type: "slide" }} /> */}
-
-      {/* <h2 className="text-6xl text-center p-6"> Slide Js with fade type</h2>
-      <SpliderTimer splideOptions={{ ...splideOptions, type: "fade" }} /> */}
+      <MultiSplide splideOptions={splideOptions} />
 
       <div className="m-72" />
     </div>

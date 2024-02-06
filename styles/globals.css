@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 @import url("./splideSpace.css");
+@import url("./galleryStyles.css");
 
 #timer-slide ul.splide__pagination > li {
   display: flex;

@@ -1,0 +1,28 @@
+#multi-slides .splide__arrows {
+  display: flex;
+  align-items: center;
+  margin-block: 10px;
+}
+
+#multi-slides .splide__arrows > button.splide__arrow {
+  border: 2px solid rgba(0, 0, 0, 0.8);
+  margin-inline: 5px;
+  border-radius: 50%;
+  color: black;
+  position: relative; /*nullify style*/
+  transform: none; /*nullify style*/
+  width: 48px;
+  height: 48px;
+  left: 0; /*nullify style*/
+}
+
+#multi-slides li.thumbnail.is-active,
+#multi-slides li.thumbnail.is-active:hover {
+  opacity: 1;
+}
+#multi-slides li.thumbnail:hover {
+  opacity: 0.6;
+}
+#multi-slides li.thumbnail {
+  opacity: 0.5;
+}
