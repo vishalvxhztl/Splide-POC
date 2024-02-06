@@ -2,10 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
-ul.splide__pagination > li {
+@import url("./splideSpace.css");
+
+#timer-slide ul.splide__pagination > li {
   display: flex;
 }
-ul.splide__pagination > li > button.splide__pagination__page.is-active {
+#timer-slide
+  ul.splide__pagination
+  > li
+  > button.splide__pagination__page.is-active {
   border-radius: 20px;
   width: 8px;
   height: 23px;
@@ -14,14 +19,17 @@ ul.splide__pagination > li > button.splide__pagination__page.is-active {
   transition: height cubic-bezier(0.37, 0.5, 0.74, 0.05) 400ms;
 }
 
-ul.splide__pagination > li > button.splide__pagination__page {
+#timer-slide ul.splide__pagination > li > button.splide__pagination__page {
   border-radius: 20px;
   width: 8px;
   height: 8px;
   background-color: rgba(170, 170, 170, 0.5);
 }
 
-ul.splide__pagination > li > button.splide__pagination__page.im-next {
+#timer-slide
+  ul.splide__pagination
+  > li
+  > button.splide__pagination__page.im-next {
   transition: height cubic-bezier(0.37, 0.5, 0.74, 0.05) 300ms;
   border-radius: 20px;
   width: 8px;

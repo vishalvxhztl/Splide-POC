@@ -1,0 +1,25 @@
+#splide-space ul.splide__list > li {
+  opacity: 0.7;
+  padding-inline: 3rem;
+}
+
+#splide-space ul.splide__list > li.is-visible {
+  opacity: 1;
+}
+#splide-space .splide__arrows {
+  display: flex;
+  align-items: center;
+  margin-block: 10px;
+}
+
+#splide-space .splide__arrows > button.splide__arrow {
+  border: 1px solid white;
+  margin-inline: 5px;
+  border-radius: 50%;
+  color: white;
+  position: relative; /*nullify style*/
+  transform: none; /*nullify style*/
+  width: 50px;
+  height: 50px;
+  left: 0; /*nullify style*/
+}

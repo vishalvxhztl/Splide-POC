@@ -10,15 +10,8 @@ import "@splidejs/react-splide/css";
 import "@splidejs/react-splide/css/sea-green";
 // or only core styles
 import "@splidejs/react-splide/css/core";
+import { getRandomColor } from "@/libs/color";
 
-// random color generator
-function getRandomColor() {
-  const red = Math.floor(Math.random() * 256);
-  const green = Math.floor(Math.random() * 256);
-  const blue = Math.floor(Math.random() * 256);
-
-  return `rgb(${red},${green},${blue})`;
-}
 
 function SpliderTimer({ splideOptions }: { splideOptions?: Options }) {
   const circularProgress = useRef<HTMLDivElement | null>(null);
@@ -29,6 +22,7 @@ function SpliderTimer({ splideOptions }: { splideOptions?: Options }) {
   return (
     <>
       <Splide
+        id="timer-slide"
         hasTrack={false}
         options={splideOptions}
         aria-label="My Favorite Images"
