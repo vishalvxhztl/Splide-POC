@@ -10,14 +10,20 @@ import "@splidejs/react-splide/css";
 import "@splidejs/react-splide/css/sea-green";
 // or only core styles
 import "@splidejs/react-splide/css/core";
-import { getRandomColor } from "@/libs/color";
-
+// import { getRandomColor } from "@/libs/color";
+import clsx from "clsx";
 
 function SpliderTimer({ splideOptions }: { splideOptions?: Options }) {
-  const circularProgress = useRef<HTMLDivElement | null>(null);
+  const circularProgress = useRef<SVGCircleElement | null>(null);
   const linearProgressBar = useRef<HTMLDivElement | null>(null);
-
-  const firstColor = getRandomColor();
+  const svgCircle = {
+    circleWidth: 50, // radius(r) , in px
+    circleBorder: 5, // progress circle border in px
+    innerCircleBorder: 2, // inner circle border in px
+    svgWidth: 100, //  [TIPS] min 2*r of circle width height will be same
+    dashStrokeGap: 155, // [TIPS] svg dash gap normally 4*r of radius [this value is quite complex, you have to play around the number]
+  };
+  // const firstColor = getRandomColor();
 
   return (
     <>
@@ -59,9 +65,13 @@ function SpliderTimer({ splideOptions }: { splideOptions?: Options }) {
 
           if (circularProgress.current) {
             // console.log(rate); // 0-1
-            circularProgress.current.style.background = `conic-gradient(${firstColor} ${
-              rate * 360
-            }deg,rgb(255,255,255) 0deg)`;
+            // circularProgress.current.style.background = `conic-gradient(${firstColor} ${
+            //   rate * 360
+            // }deg,rgb(255,255,255) 0deg)`;
+            circularProgress.current.setAttribute(
+              "stroke-dashoffset",
+              `${svgCircle.dashStrokeGap - svgCircle.dashStrokeGap * rate}`
+            ); // will start from x value -> reach to 0 for example start with 4* circle width and reach to 0
           }
         }}
         onPaginationUpdated={(
@@ -123,15 +133,45 @@ function SpliderTimer({ splideOptions }: { splideOptions?: Options }) {
         {/* Horizontal Progress bar [END]*/}
 
         {/* Circular Progress Bar [START]*/}
-        <div className="relative w-16 h-16">
-          <div
+        <div className={clsx("relative", `w-[100px] h-[100px]`)}>
+          {/* <div
             className="w-16 h-16 border rounded-full"
             ref={circularProgress}
-          />
-
+          /> */}
+          <svg
+            height={svgCircle.svgWidth}
+            width={svgCircle.svgWidth}
+            xmlns="http://www.w3.org/2000/svg"
+            className="-rotate-90"
+          >
+            <circle
+              stroke="rgb(255 255 255)"
+              fill="none"
+              r={svgCircle.circleWidth / 2} // radius of circle
+              cx={svgCircle.circleWidth} // center point in svg so it should half os height and width
+              cy={svgCircle.circleWidth}
+              stroke-width={svgCircle.circleBorder} // border width
+              strokeDasharray={svgCircle.dashStrokeGap} // stroke dash array
+              strokeDashoffset={svgCircle.dashStrokeGap}
+              strokeLinecap="round"
+              ref={circularProgress}
+            />
+            <circle
+              stroke="rgb(255 255 255 / 27%)"
+              fill="none"
+              r={svgCircle.circleWidth / 2} // radius of circle
+              cx={svgCircle.circleWidth} // center point in svg so it should half os height and width
+              cy={svgCircle.circleWidth}
+              stroke-inner={svgCircle.innerCircleBorder} // border width
+              strokeDasharray={4 * svgCircle.circleWidth} // stroke dash array
+            />
+          </svg>
           {/* Play - Pause Buttons */}
           <button
-            className="splide__toggle w-12 h-12 absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 bg-gray-300 rounded-full"
+            className={clsx(
+              "splide__toggle absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 text-white",
+              `w-[50px] h-[50px]`
+            )}
             type="button"
           >
             <span className="splide__toggle__play">&gt;</span>
